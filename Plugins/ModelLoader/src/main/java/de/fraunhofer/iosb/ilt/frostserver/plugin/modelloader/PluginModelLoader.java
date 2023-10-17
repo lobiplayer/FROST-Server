@@ -150,13 +150,13 @@ public class PluginModelLoader implements PluginRootDocument, PluginModel, Liqui
 
     @Override
     public void installSecurityDefinitions(PersistenceManager pm) {
-        if (pm instanceof JooqPersistenceManager) {
-            for (String fileName : securityFiles) {
-                SecurityModel secModel = loadSecurityFile(fileName);
-                if (secModel == null) {
-                    continue;
-                }
+        for (String fileName : securityFiles) {
+            SecurityModel secModel = loadSecurityFile(fileName);
+            if (secModel == null) {
+                continue;
+            }
 
+            if (pm instanceof JooqPersistenceManager) {
                 for (SecurityModel.SecurityEntry secEntry : secModel.getEntries()) {
                     pm.addSecurityDefinition(secEntry);
                 }

@@ -37,6 +37,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A check that runs a stand-alone query.
+ *
+ * TODO: Configure min/max number of results
+ * TODO: Allow checks on returned entities
  */
 public class CheckStandaloneQuery implements ValidationCheck, UserCondition {
 

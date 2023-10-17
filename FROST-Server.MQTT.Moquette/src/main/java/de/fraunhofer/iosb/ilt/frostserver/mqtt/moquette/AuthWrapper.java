@@ -132,6 +132,7 @@ public class AuthWrapper implements IAuthenticator, IAuthorizatorPolicy {
         if (frostClientId.equalsIgnoreCase(clientId)) {
             return true;
         }
+        // TODO: if auth.authenticateOnly true else
         return authProvider.userHasRole(clientId, user, roleCeate);
     }
 
@@ -143,6 +144,8 @@ public class AuthWrapper implements IAuthenticator, IAuthorizatorPolicy {
         if (StringUtils.containsAny(topic.toString(), '#', '+')) {
             return false;
         }
+        // TODO: Add checks for FineGrained security
+        // TODO: if auth.authenticateOnly true else
         return anonymousRead || authProvider.userHasRole(clientId, user, roleRead);
     }
 

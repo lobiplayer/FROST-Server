@@ -33,6 +33,9 @@ import java.util.List;
 @ConfigurableClass
 public class SecurityModel {
 
+    /**
+     * A security definition for a single Table (Entity Type).
+     */
     @ConfigurableClass
     public static class SecurityEntry {
 
@@ -68,6 +71,12 @@ public class SecurityModel {
     }
 
     @ConfigurableField(editor = EditorList.class,
+            label = "MQTT Whitelist", description = "Regular expressions whitelisting MQTT topics.")
+    @EditorList.EdOptsList(editor = EditorString.class)
+    @EditorString.EdOptsString(dflt = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$")
+    private List<String> mqttTopicWhiteList;
+
+    @ConfigurableField(editor = EditorList.class,
             label = "Definitions", description = "The security definitions")
     @EditorList.EdOptsList(editor = EditorClass.class)
     @EditorClass.EdOptsClass(clazz = SecurityEntry.class)
@@ -77,8 +86,18 @@ public class SecurityModel {
         return entries;
     }
 
-    public void setEntries(List<SecurityEntry> entries) {
+    public SecurityModel setEntries(List<SecurityEntry> entries) {
         this.entries = entries;
+        return this;
+    }
+
+    public List<String> getMqttTopicWhiteList() {
+        return mqttTopicWhiteList;
+    }
+
+    public SecurityModel setMqttTopicWhiteList(List<String> mqttTopicWhiteList) {
+        this.mqttTopicWhiteList = mqttTopicWhiteList;
+        return this;
     }
 
 }
