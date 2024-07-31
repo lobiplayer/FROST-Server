@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <!--
+     Copyright (C) 2021 Secure Dimensions GmbH, D-81377
+     Munich, Germany.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Lesser General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Lesser General Public License for more details.
+
+     You should have received a copy of the GNU Lesser General Public License
+     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    -->
+    <changeSet author="am" id="2023-08-03-PLUS-GROUPS_CAMPAIGNS" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="GROUPS_CAMPAIGNS" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="GROUPS_CAMPAIGNS">
+            <column name="GROUP_ID" type="${idType-Group}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CAMPAIGN_ID" type="${idType-Campaign}">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addPrimaryKey columnNames="GROUP_ID, CAMPAIGN_ID" constraintName="GROUPS_CAMPAIGNS_PKEY" tableName="GROUPS_CAMPAIGNS"/>
+        
+        <createIndex tableName="GROUPS_CAMPAIGNS" indexName="GROUPS_CAMPAIGNS_CAMPAIGN_ID">
+            <column name="CAMPAIGN_ID" />
+        </createIndex>
+        
+        <createIndex tableName="GROUPS_CAMPAIGNS" indexName="GROUPS_CAMPAIGNS_GROUP_ID">
+            <column name="GROUP_ID" />
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

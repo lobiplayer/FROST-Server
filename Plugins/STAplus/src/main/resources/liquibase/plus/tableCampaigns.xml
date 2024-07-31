@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <!--
+     Copyright (C) 2021-2023 Secure Dimensions GmbH, D-81377
+     Munich, Germany.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Lesser General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Lesser General Public License for more details.
+
+     You should have received a copy of the GNU Lesser General Public License
+     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    -->
+    <changeSet author="am" id="2023-08-03-PLUS-CAMPAIGNS-1" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <or>
+                    <tableExists tableName="CAMPAIGNS" />
+                </or>
+            </not>
+        </preConditions>
+
+        <createTable tableName="CAMPAIGNS">
+            <column name="NAME" type="TEXT"/>
+            <column name="DESCRIPTION" type="TEXT"/>
+            <column name="PROPERTIES" type="JSONB"/>
+            <column name="CLASSIFICATION" type="TEXT"/>
+            <column name="TERMS_OF_USE" type="TEXT"/>
+            <column name="PRIVACY_POLICY" type="TEXT"/>
+            <column name="URL" type="TEXT"/>
+            <column name="CREATION_TIME" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="START_TIME" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="END_TIME" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="LICENSE_ID" type="${idType-License}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="PARTY_ID" type="${idType-Party}">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="scf" id="2021-08-03-PLUS-CAMPAIGNS-2" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <preConditions onFail="MARK_RAN">
+            <changeLogPropertyDefined property="id-Campaign" value="LONG" />
+            <not>
+                <columnExists columnName="ID" tableName="CAMPAIGNS" />
+            </not>
+        </preConditions>
+        <addColumn tableName="CAMPAIGNS">
+            <column name="ID" type="${idTypeLong}" autoIncrement="true" >
+                <constraints primaryKey="true" primaryKeyName="CAMPAIGNS_PKEY" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="scf" id="2021-08-03-PLUS-CAMPAIGNS-3" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <preConditions onFail="MARK_RAN">
+            <or>
+                <changeLogPropertyDefined property="id-Campaign" value="STRING" />
+                <changeLogPropertyDefined property="id-Campaign" value="UUID" />
+            </or>
+            <not>
+                <columnExists columnName="ID" tableName="CAMPAIGNS" />
+            </not>
+        </preConditions>
+        <addColumn tableName="CAMPAIGNS">
+            <column name="ID" type="${idType-Campaign}" defaultValueComputed="${defaultValueComputed-Campaign}" >
+                <constraints primaryKey="true" primaryKeyName="CAMPAIGNS_PKEY"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
